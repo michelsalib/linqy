@@ -1,7 +1,7 @@
 {
-    "name": "linq",
+    "name": "linqy",
     "version": "0.0.1",
-    "description": "Linq impletation for node",
+    "description": "Linq impletation for nodejs, originaly made in typescript.",
     "keywords": [
         "linq",
         "enumerable",
@@ -9,10 +9,10 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/michelsalib/linq-js.git"
+        "url": "https://github.com/michelsalib/linqy.git"
     },
     "bugs": {
-        "url": "https://github.com/michelsalib/linq-js/issues"
+        "url": "https://github.com/michelsalib/linqy/issues"
     },
     "readmeFilename": "README.md",
     "devDependencies": {
@@ -24,7 +24,7 @@
         "pretest": "node_modules/.bin/tsc --module commonjs --target ES5 test/tests.ts",
         "test": "mocha --recursive -C"
     },
-    "main": "linq.js",
+    "main": "linqy.js",
     "directories": {
         "test": "test"
     },
