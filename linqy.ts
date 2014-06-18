@@ -344,7 +344,7 @@ export class Enumerable<T> {
 
 }
 
-export class Grouping <U, T> extends Enumerable<T> {
+export interface Grouping <U, T> extends Enumerable<T> {
     key:U;
 }
 

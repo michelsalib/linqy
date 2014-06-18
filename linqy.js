@@ -1,9 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 function e(array) {
     if (typeof array === "undefined") { array = []; }
     var enumerable = null;
@@ -370,18 +364,8 @@ var Enumerable = (function () {
 })();
 exports.Enumerable = Enumerable;
 
-var Grouping = (function (_super) {
-    __extends(Grouping, _super);
-    function Grouping() {
-        _super.apply(this, arguments);
-    }
-    return Grouping;
-})(Enumerable);
-exports.Grouping = Grouping;
-
 var Order;
 (function (Order) {
     Order[Order["ASC"] = 1] = "ASC";
     Order[Order["DESC"] = -1] = "DESC";
 })(Order || (Order = {}));
-//# sourceMappingURL=linqy.js.map
