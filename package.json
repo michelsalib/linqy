@@ -1,6 +1,6 @@
 {
     "name": "linqy",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Linq impletation for nodejs, originaly made in typescript.",
     "keywords": [
         "linq",
