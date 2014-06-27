@@ -1,5 +1,6 @@
 export declare function e<T>(array?: T[]): Enumerable<T>;
 export declare function e<T>(enumerable?: Enumerable<T>): Enumerable<T>;
+export declare function e(text: Enumerable<string>): String;
 export declare function e(text: string): String;
 export declare class Enumerable<T> {
     public aggregate<U>(predicate: (workingSentence: U, item: T) => U, seed?: U): U;
@@ -43,7 +44,51 @@ export declare class Enumerable<T> {
     private order(orderingSequence);
 }
 export declare class String extends Enumerable<string> {
-    public contains(text: any): boolean;
+    public contains(text: string): boolean;
+    public contains(text: String): boolean;
+    public compare(text: string, caseInsensitive?: boolean): number;
+    public compare(text: String, caseInsensitive?: boolean): number;
+    public endsWith(text: string, caseInsensitive?: boolean): boolean;
+    public endsWith(text: String, caseInsensitive?: boolean): boolean;
+    public equals(text: string, caseInsensitive?: boolean): boolean;
+    public equals(text: String, caseInsensitive?: boolean): boolean;
+    static format(text: string, ...args: any[]): String;
+    static format(text: String, ...args: any[]): String;
+    public indexOf(text: string, caseInsensitive?: boolean): number;
+    public indexOf(text: String, caseInsensitive?: boolean): number;
+    public indexOfAny(text: string, caseInsensitive?: boolean): number;
+    public indexOfAny(text: String, caseInsensitive?: boolean): number;
+    public insert(position: number, text: string): String;
+    public insert(position: number, text: String): String;
+    static isNullOrEmpty(text: string): boolean;
+    static isNullOrEmpty(text: String): boolean;
+    static isNullOrWhiteSpace(text: string): boolean;
+    static isNullOrWhiteSpace(text: String): boolean;
+    static join(glue: string, parts: any[]): String;
+    static join(glue: String, parts: any[]): String;
+    public lastIndexOf(text: string, caseInsensitive?: boolean): number;
+    public lastIndexOf(text: String, caseInsensitive?: boolean): number;
+    public lastIndexOfAny(text: string, caseInsensitive?: boolean): number;
+    public lastIndexOfAny(text: String, caseInsensitive?: boolean): number;
+    public padLeft(pad: number, char?: string): String;
+    public padLeft(pad: number, char?: String): String;
+    public padRight(pad: number, char?: string): String;
+    public padRight(pad: number, char?: String): String;
+    public remove(from: number, to?: number): String;
+    public replace(searchValue: string, replaceValue: string): String;
+    public replace(searchValue: String, replaceValue: String): String;
+    public split(separator: string): string[];
+    public split(separator: RegExp): string[];
+    public startsWith(text: string, caseInsensitive?: boolean): boolean;
+    public startsWith(text: String, caseInsensitive?: boolean): boolean;
+    public substring(from: number, to?: number): String;
+    public toCharArray(): string[];
+    public toLower(): String;
+    public toUpper(): String;
+    public trim(...chars: string[]): String;
+    public trimEnd(...chars: string[]): String;
+    public trimStart(...chars: string[]): String;
+    private doTrim(chars, template);
     public toString(): string;
 }
 export interface Grouping<U, T> extends Enumerable<T> {

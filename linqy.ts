@@ -1,43 +1,44 @@
-export function e<T>(array?:T[]): Enumerable<T>;
-export function e<T>(enumerable?:Enumerable<T>): Enumerable<T>;
-export function e(text: string): String;
+export function e<T>(array?:T[]):Enumerable<T>;
+export function e<T>(enumerable?:Enumerable<T>):Enumerable<T>;
+export function e(text:Enumerable<string>):String;
+export function e(text:string):String;
 
-export function e<T>(input: any = null): Enumerable<T> {
+export function e<T>(input:any = null):any {
 
     if (typeof input == 'string') {
-        var enumerable: any = (<string>input).split('');
+        var enumerable:any = (<string>input).split('');
         enumerable.__proto__ = String.prototype;
         return enumerable;
     }
 
     if (input instanceof Enumerable) {
-        var enumerable: any = [].slice.call(input, 0);
+        var enumerable:any = [].slice.call(input, 0);
 
         if (input.all(i => typeof i == 'string')) {
             enumerable.__proto__ = String.prototype;
             return enumerable;
         }
 
-        var enumerable: any = [].slice.call(input, 0);
+        var enumerable:any = [].slice.call(input, 0);
         enumerable.__proto__ = Enumerable.prototype;
         return enumerable;
     }
 
     if (input instanceof Array) {
-        var enumerable: any = [].slice.call(input, 0);
+        var enumerable:any = [].slice.call(input, 0);
 
         if (input.every(i => typeof i == 'string')) {
             enumerable.__proto__ = String.prototype;
             return enumerable;
         }
 
-        var enumerable: any = [].slice.call(input, 0);
+        var enumerable:any = [].slice.call(input, 0);
         enumerable.__proto__ = Enumerable.prototype;
         return enumerable;
     }
 
     if (input === null) {
-        var enumerable: any = [];
+        var enumerable:any = [];
         enumerable.__proto__ = Enumerable.prototype;
         return enumerable;
     }
@@ -378,12 +379,279 @@ export class Enumerable<T> {
 
 export class String extends Enumerable<string> {
 
-    contains(text:any): boolean {
+    contains(text:string):boolean;
+
+    contains(text:String):boolean;
+
+    contains(text:any):boolean {
         return -1 != this.toString().indexOf(text.toString());
     }
 
-    toString(): string {
-        return [].join.call(this,'');
+    compare(text:string, caseInsensitive?:boolean):number;
+
+    compare(text:String, caseInsensitive?:boolean):number;
+
+    compare(text:any, caseInsensitive:boolean = false):number {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.localeCompare(text);
+    }
+
+    endsWith(text:string, caseInsensitive?:boolean):boolean;
+
+    endsWith(text:String, caseInsensitive?:boolean):boolean;
+
+    endsWith(text:any, caseInsensitive:boolean = false):boolean {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return -1 !== self.indexOf(text, self.length - text.length);
+    }
+
+    equals(text:string, caseInsensitive?:boolean):boolean;
+
+    equals(text:String, caseInsensitive?:boolean):boolean;
+
+    equals(text:any, caseInsensitive:boolean = false):boolean {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self == text;
+    }
+
+    static format(text:string, ...args:any[]):String;
+
+    static format(text:String, ...args:any[]):String;
+
+    static format(text:any, ...args:any[]):String {
+        return e(text.toString().replace(/{(\d+)}/g, (match, index) => args[index].toString()));
+    }
+
+    indexOf(text:string, caseInsensitive?:boolean):number;
+
+    indexOf(text:String, caseInsensitive?:boolean):number;
+
+    indexOf(text:any, caseInsensitive:boolean = false):number {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.indexOf(text);
+    }
+
+    indexOfAny(text:string, caseInsensitive?:boolean):number;
+
+    indexOfAny(text:String, caseInsensitive?:boolean):number;
+
+    indexOfAny(text:any, caseInsensitive:boolean = false):number {
+        var self = this.toString();
+        var text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        var needles = text.toString().split('');
+
+        for (var i = 0; i < self.length; i++) {
+            if (needles.some(n => n == self[i])) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    insert(position:number, text:string):String;
+
+    insert(position:number, text:String):String;
+
+    insert(position:number, text:any):String {
+        var self = this.toString();
+        var text = text.toString();
+
+        return e(self.substr(0, position) + text + self.substr(position));
+    }
+
+    static isNullOrEmpty(text:string):boolean;
+
+    static isNullOrEmpty(text:String):boolean;
+
+    static isNullOrEmpty(text:any):boolean {
+        return !!(!text || /^$/.test(text));
+    }
+
+    static isNullOrWhiteSpace(text:string):boolean;
+
+    static isNullOrWhiteSpace(text:String):boolean;
+
+    static isNullOrWhiteSpace(text:any):boolean {
+        return !!(!text || /^\s*$/.test(text));
+    }
+
+    static join(glue:string, parts:any[]):String;
+
+    static join(glue:String, parts:any[]):String;
+
+    static join(glue:any, parts:any[]):String {
+        return e(parts.join(glue));
+    }
+
+    lastIndexOf(text:string, caseInsensitive?:boolean):number;
+
+    lastIndexOf(text:String, caseInsensitive?:boolean):number;
+
+    lastIndexOf(text:any, caseInsensitive:boolean = false):number {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.lastIndexOf(text);
+    }
+
+    lastIndexOfAny(text:string, caseInsensitive?:boolean):number;
+
+    lastIndexOfAny(text:String, caseInsensitive?:boolean):number;
+
+    lastIndexOfAny(text:any, caseInsensitive:boolean = false):number {
+        var self = this.toString();
+        var text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        var needles = text.toString().split('');
+
+        for (var i = self.length - 1; i >= 0; i--) {
+            if (needles.some(n => n == self[i])) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    padLeft(pad:number, char?:string):String;
+
+    padLeft(pad:number, char?:String):String;
+
+    padLeft(pad:number, char:any = ' '):String {
+        return e(Array(pad - this.toString().length + 1).join(char) + this.toString());
+    }
+
+    padRight(pad:number, char?:string):String;
+
+    padRight(pad:number, char?:String):String;
+
+    padRight(pad:number, char:any = ' '):String {
+        return e(this.toString() + Array(pad - this.toString().length + 1).join(char));
+    }
+
+    remove(from:number, to?:number):String {
+        return e(this.toString().substr(from, to));
+    }
+
+    replace(searchValue:string, replaceValue:string):String;
+
+    replace(searchValue:String, replaceValue:String):String;
+
+    replace(searchValue:any, replaceValue:any):String {
+        return e(this.toString().split(searchValue).join(replaceValue));
+    }
+
+    split(separator:string):string[];
+
+    split(separator:RegExp):string[];
+
+    split(separator:any):string[] {
+        return this.toString().split(separator);
+    }
+
+    startsWith(text:string, caseInsensitive?:boolean):boolean;
+
+    startsWith(text:String, caseInsensitive?:boolean):boolean;
+
+    startsWith(text:any, caseInsensitive:boolean = false):boolean {
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return text == self.substr(0, text.length);
+    }
+
+    substring(from:number, to?:number):String {
+        return e(this.toString().substr(from, to));
+    }
+
+    toCharArray():string[] {
+        return ''.split.call(this, '');
+    }
+
+    toLower():String {
+        return e(''.toLocaleLowerCase.call(this));
+    }
+
+    toUpper():String {
+        return e(''.toLocaleUpperCase.call(this));
+    }
+
+    trim(...chars: string[]):String {
+        return this.doTrim(chars, '^__*|__*$');
+    }
+
+    trimEnd(...chars: string[]):String {
+        return this.doTrim(chars, '__*$');
+    }
+
+    trimStart(...chars: string[]):String {
+        return this.doTrim(chars, '^__*');
+    }
+
+    private doTrim(chars: string[], template: string): String {
+        if (chars.length == 0) {
+            chars = [' '];
+        }
+
+        var regexClass = '[' + chars.join('').replace(/[$-\/?[-^{|}]/g, '\\$&') + ']';
+
+        var trimRule = new RegExp(template.replace(/__/g, regexClass), 'g');
+
+        return e(this.toString().replace(trimRule, ''));
+    }
+
+    toString():string {
+        return [].join.call(this, '');
     }
 
 }

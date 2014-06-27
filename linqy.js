@@ -411,6 +411,233 @@ var String = (function (_super) {
         return -1 != this.toString().indexOf(text.toString());
     };
 
+    String.prototype.compare = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.localeCompare(text);
+    };
+
+    String.prototype.endsWith = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return -1 !== self.indexOf(text, self.length - text.length);
+    };
+
+    String.prototype.equals = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self == text;
+    };
+
+    String.format = function (text) {
+        var args = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            args[_i] = arguments[_i + 1];
+        }
+        return exports.e(text.toString().replace(/{(\d+)}/g, function (match, index) {
+            return args[index].toString();
+        }));
+    };
+
+    String.prototype.indexOf = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.indexOf(text);
+    };
+
+    String.prototype.indexOfAny = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        var text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        var needles = text.toString().split('');
+
+        for (var i = 0; i < self.length; i++) {
+            if (needles.some(function (n) {
+                return n == self[i];
+            })) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+
+    String.prototype.insert = function (position, text) {
+        var self = this.toString();
+        var text = text.toString();
+
+        return exports.e(self.substr(0, position) + text + self.substr(position));
+    };
+
+    String.isNullOrEmpty = function (text) {
+        return !!(!text || /^$/.test(text));
+    };
+
+    String.isNullOrWhiteSpace = function (text) {
+        return !!(!text || /^\s*$/.test(text));
+    };
+
+    String.join = function (glue, parts) {
+        return exports.e(parts.join(glue));
+    };
+
+    String.prototype.lastIndexOf = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return self.lastIndexOf(text);
+    };
+
+    String.prototype.lastIndexOfAny = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        var text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        var needles = text.toString().split('');
+
+        for (var i = self.length - 1; i >= 0; i--) {
+            if (needles.some(function (n) {
+                return n == self[i];
+            })) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+
+    String.prototype.padLeft = function (pad, char) {
+        if (typeof char === "undefined") { char = ' '; }
+        return exports.e(Array(pad - this.toString().length + 1).join(char) + this.toString());
+    };
+
+    String.prototype.padRight = function (pad, char) {
+        if (typeof char === "undefined") { char = ' '; }
+        return exports.e(this.toString() + Array(pad - this.toString().length + 1).join(char));
+    };
+
+    String.prototype.remove = function (from, to) {
+        return exports.e(this.toString().substr(from, to));
+    };
+
+    String.prototype.replace = function (searchValue, replaceValue) {
+        return exports.e(this.toString().split(searchValue).join(replaceValue));
+    };
+
+    String.prototype.split = function (separator) {
+        return this.toString().split(separator);
+    };
+
+    String.prototype.startsWith = function (text, caseInsensitive) {
+        if (typeof caseInsensitive === "undefined") { caseInsensitive = false; }
+        var self = this.toString();
+        text = text.toString();
+
+        if (caseInsensitive) {
+            text = text.toLocaleLowerCase();
+            self = self.toLocaleLowerCase();
+        }
+
+        return text == self.substr(0, text.length);
+    };
+
+    String.prototype.substring = function (from, to) {
+        return exports.e(this.toString().substr(from, to));
+    };
+
+    String.prototype.toCharArray = function () {
+        return ''.split.call(this, '');
+    };
+
+    String.prototype.toLower = function () {
+        return exports.e(''.toLocaleLowerCase.call(this));
+    };
+
+    String.prototype.toUpper = function () {
+        return exports.e(''.toLocaleUpperCase.call(this));
+    };
+
+    String.prototype.trim = function () {
+        var chars = [];
+        for (var _i = 0; _i < (arguments.length - 0); _i++) {
+            chars[_i] = arguments[_i + 0];
+        }
+        return this.doTrim(chars, '^__*|__*$');
+    };
+
+    String.prototype.trimEnd = function () {
+        var chars = [];
+        for (var _i = 0; _i < (arguments.length - 0); _i++) {
+            chars[_i] = arguments[_i + 0];
+        }
+        return this.doTrim(chars, '__*$');
+    };
+
+    String.prototype.trimStart = function () {
+        var chars = [];
+        for (var _i = 0; _i < (arguments.length - 0); _i++) {
+            chars[_i] = arguments[_i + 0];
+        }
+        return this.doTrim(chars, '^__*');
+    };
+
+    String.prototype.doTrim = function (chars, template) {
+        if (chars.length == 0) {
+            chars = [' '];
+        }
+
+        var regexClass = '[' + chars.join('').replace(/[$-\/?[-^{|}]/g, '\\$&') + ']';
+
+        var trimRule = new RegExp(template.replace(/__/g, regexClass), 'g');
+
+        return exports.e(this.toString().replace(trimRule, ''));
+    };
+
     String.prototype.toString = function () {
         return [].join.call(this, '');
     };

@@ -437,4 +437,153 @@ describe('linqy', () => {
             assert.deepEqual(a.zip(b, (first, second) => first + ' ' + second).toArray(), ['a d', 'b e', 'c f']);
         });
     });
+
+    describe('string specific functions', () => {
+        it('compare', () => {
+            assert.equal(e('MICHEL').compare('MICHEL'), 0);
+            assert.equal(e('Michel').compare('Salib'), -6);
+            assert.equal(e('michel').compare('MICHEL'), 32);
+            assert.equal(e('michel').compare('MICHEL', true), 0);
+        });
+
+        it('endsWith', () => {
+            assert.isTrue(e('hello world').endsWith('world'));
+            assert.isFalse(e('hello world!').endsWith('world'));
+            assert.isFalse(e('hello world').endsWith('WORLD'));
+            assert.isTrue(e('hello world').endsWith('WORLD', true));
+        });
+
+        it('equals', () => {
+            assert.isTrue(e('hello').equals('hello'));
+            assert.isFalse(e('hello').equals('world'));
+            assert.isFalse(e('world').equals('WORLD'));
+            assert.isTrue(e('world').equals('WORLD', true));
+        });
+
+        it('format', () => {
+            assert.equal(linqy.String.format('hello {0}!', 'world').toString(), 'hello world!');
+            assert.equal(linqy.String.format('hello {0} {0}!', 'world').toString(), 'hello world world!');
+            assert.equal(linqy.String.format('{1} {0}!', 'world', 'hello').toString(), 'hello world!');
+        });
+
+        it('indexOf', () => {
+            assert.equal(e('hello hello').indexOf('e'), 1);
+            assert.equal(e('hello hello').indexOf('el'), 1);
+            assert.equal(e('hello hello').indexOf('E'), -1);
+            assert.equal(e('hello hello').indexOf('E', true), 1);
+        });
+
+        it('indexOfAny', () => {
+            assert.equal(e('hello hello').indexOfAny('ae'), 1);
+            assert.equal(e('hello hello').indexOfAny('ol'), 2);
+            assert.equal(e('hello hello').indexOfAny('aE'), -1);
+            assert.equal(e('hello hello').indexOfAny('aE', true), 1);
+        });
+
+        it('insert', () => {
+            assert.equal(e('hello!').insert(5, ' world').toString(), 'hello world!');
+        });
+
+        it('isNullOrEmpty', () => {
+            assert.isTrue(linqy.String.isNullOrEmpty(undefined));
+            assert.isTrue(linqy.String.isNullOrEmpty(null));
+            assert.isTrue(linqy.String.isNullOrEmpty(''));
+            assert.isTrue(linqy.String.isNullOrEmpty(e('')));
+            assert.isFalse(linqy.String.isNullOrEmpty(' '));
+            assert.isFalse(linqy.String.isNullOrEmpty(e(' ')));
+            assert.isFalse(linqy.String.isNullOrEmpty(e('michel')));
+            assert.isFalse(linqy.String.isNullOrEmpty(e('michel')));
+        });
+
+        it('isNullOrWhiteSpace', () => {
+            assert.isTrue(linqy.String.isNullOrWhiteSpace(undefined));
+            assert.isTrue(linqy.String.isNullOrWhiteSpace(null));
+            assert.isTrue(linqy.String.isNullOrWhiteSpace(' '));
+            assert.isTrue(linqy.String.isNullOrWhiteSpace(e(' ')));
+            assert.isTrue(linqy.String.isNullOrWhiteSpace(e('')));
+            assert.isFalse(linqy.String.isNullOrWhiteSpace(e('michel')));
+            assert.isFalse(linqy.String.isNullOrWhiteSpace(e('michel')));
+        });
+
+        it('join', () => {
+            assert.equal(linqy.String.join(' ', ['hello', 'world']).toString(), 'hello world');
+        });
+
+        it('lastIndexOf', () => {
+            assert.equal(e('hello hello').lastIndexOf('e'), 7);
+            assert.equal(e('hello hello').lastIndexOf('el'), 7);
+            assert.equal(e('hello hello').lastIndexOf('E'), -1);
+            assert.equal(e('hello hello').lastIndexOf('E', true), 7);
+        });
+
+        it('lastIndexOfAny', () => {
+            assert.equal(e('hello hello').lastIndexOfAny('ae'), 7);
+            assert.equal(e('hello hello').lastIndexOfAny('ol'), 10);
+            assert.equal(e('hello hello').lastIndexOfAny('aE'), -1);
+            assert.equal(e('hello hello').lastIndexOfAny('aE', true), 7);
+        });
+
+        it('padLeft', () => {
+            assert.equal(e('hello').padLeft(10).toString(), '     hello');
+            assert.equal(e('hello').padLeft(10, '.').toString(), '.....hello');
+        });
+
+        it('padRight', () => {
+            assert.equal(e('hello').padRight(10).toString(), 'hello     ');
+            assert.equal(e('hello').padRight(10, '.').toString(), 'hello.....');
+        });
+
+        it('remove', () => {
+            assert.equal(e('hello world').remove(6).toString(), 'world');
+            assert.equal(e('hello world').remove(6, 1).toString(), 'w');
+        });
+
+        it('replace', () => {
+            assert.equal(e('hello world world').replace(' world', '!').toString(), 'hello!!');
+        });
+
+        it('split', () => {
+            assert.deepEqual(e('hello world world').split(' '), ['hello', 'world', 'world']);
+            assert.deepEqual(e('hello world:world').split(/[ :]/), ['hello', 'world', 'world']);
+        });
+
+        it('startsWith', () => {
+            assert.isTrue(e('hello world').startsWith('hello'));
+            assert.isFalse(e('!hello world!').startsWith('hello'));
+            assert.isFalse(e('hello world').startsWith('HELLO'));
+            assert.isTrue(e('hello world').startsWith('HELLO', true));
+        });
+
+        it('substring', () => {
+            assert.equal(e('hello world!').substring(6).toString(), 'world!');
+            assert.equal(e('hello world!').substring(6, 5).toString(), 'world');
+        });
+
+        it('toCharArray', () => {
+            assert.deepEqual(e('hello').toCharArray(), ['h', 'e', 'l', 'l', 'o']);
+        });
+
+        it('toLower', () => {
+            assert.equal(e('Hello').toLower().toString(), 'hello');
+        });
+
+        it('toUpper', () => {
+            assert.equal(e('Hello').toUpper().toString(), 'HELLO');
+        });
+
+        it('trim', () => {
+            assert.equal(e('  Hello world ').trim().toString(), 'Hello world');
+            assert.equal(e('..Hello world ').trim('.').toString(), 'Hello world ');
+            assert.equal(e('..Hello world; ').trim('.', ';').toString(), 'Hello world; ');
+        });
+
+        it('trimEnd', () => {
+            assert.equal(e('  Hello  ').trimEnd().toString(), '  Hello');
+        });
+
+        it('trimStart', () => {
+            assert.equal(e('  Hello  ').trimStart().toString(), 'Hello  ');
+        });
+
+    });
 });
