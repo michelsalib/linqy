@@ -1,16 +1,48 @@
-export function e<T>(array:T[] = []):Enumerable<T> {
-    var enumerable = null;
+export function e<T>(array?:T[]): Enumerable<T>;
+export function e<T>(enumerable?:Enumerable<T>): Enumerable<T>;
+export function e(text: string): String;
 
-    if (array instanceof Enumerable || array instanceof Array) {
-        enumerable = [].slice.call(array, 0);
+export function e<T>(input: any = null): Enumerable<T> {
+
+    if (typeof input == 'string') {
+        var enumerable: any = (<string>input).split('');
+        enumerable.__proto__ = String.prototype;
+        return enumerable;
     }
-    else {
-        throw new Error('Unsupported input type, use array or Enumerable.');
+
+    if (input instanceof Enumerable) {
+        var enumerable: any = [].slice.call(input, 0);
+
+        if (input.all(i => typeof i == 'string')) {
+            enumerable.__proto__ = String.prototype;
+            return enumerable;
+        }
+
+        var enumerable: any = [].slice.call(input, 0);
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
     }
 
-    enumerable.__proto__ = Enumerable.prototype;
+    if (input instanceof Array) {
+        var enumerable: any = [].slice.call(input, 0);
 
-    return enumerable;
+        if (input.every(i => typeof i == 'string')) {
+            enumerable.__proto__ = String.prototype;
+            return enumerable;
+        }
+
+        var enumerable: any = [].slice.call(input, 0);
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
+    }
+
+    if (input === null) {
+        var enumerable: any = [];
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
+    }
+
+    throw new Error('Unsupported input type, use array, string or Enumerable.');
 }
 
 export class Enumerable<T> {
@@ -32,7 +64,7 @@ export class Enumerable<T> {
     }
 
     cast<U>():Enumerable<U> {
-        return e(<any>this);
+        return <any>e(this);
     }
 
     concat(enumerable:Enumerable<T>):Enumerable<T> {
@@ -340,6 +372,18 @@ export class Enumerable<T> {
         enumerable.orderingSequence = orderingSequence;
 
         return enumerable;
+    }
+
+}
+
+export class String extends Enumerable<string> {
+
+    contains(text:any): boolean {
+        return -1 != this.toString().indexOf(text.toString());
+    }
+
+    toString(): string {
+        return [].join.call(this,'');
     }
 
 }

@@ -1,16 +1,54 @@
-function e(array) {
-    if (typeof array === "undefined") { array = []; }
-    var enumerable = null;
-
-    if (array instanceof Enumerable || array instanceof Array) {
-        enumerable = [].slice.call(array, 0);
-    } else {
-        throw new Error('Unsupported input type, use array or Enumerable.');
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+function e(input) {
+    if (typeof input === "undefined") { input = null; }
+    if (typeof input == 'string') {
+        var enumerable = input.split('');
+        enumerable.__proto__ = String.prototype;
+        return enumerable;
     }
 
-    enumerable.__proto__ = Enumerable.prototype;
+    if (input instanceof Enumerable) {
+        var enumerable = [].slice.call(input, 0);
 
-    return enumerable;
+        if (input.all(function (i) {
+            return typeof i == 'string';
+        })) {
+            enumerable.__proto__ = String.prototype;
+            return enumerable;
+        }
+
+        var enumerable = [].slice.call(input, 0);
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
+    }
+
+    if (input instanceof Array) {
+        var enumerable = [].slice.call(input, 0);
+
+        if (input.every(function (i) {
+            return typeof i == 'string';
+        })) {
+            enumerable.__proto__ = String.prototype;
+            return enumerable;
+        }
+
+        var enumerable = [].slice.call(input, 0);
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
+    }
+
+    if (input === null) {
+        var enumerable = [];
+        enumerable.__proto__ = Enumerable.prototype;
+        return enumerable;
+    }
+
+    throw new Error('Unsupported input type, use array, string or Enumerable.');
 }
 exports.e = e;
 
@@ -363,6 +401,22 @@ var Enumerable = (function () {
     return Enumerable;
 })();
 exports.Enumerable = Enumerable;
+
+var String = (function (_super) {
+    __extends(String, _super);
+    function String() {
+        _super.apply(this, arguments);
+    }
+    String.prototype.contains = function (text) {
+        return -1 != this.toString().indexOf(text.toString());
+    };
+
+    String.prototype.toString = function () {
+        return [].join.call(this, '');
+    };
+    return String;
+})(Enumerable);
+exports.String = String;
 
 var Order;
 (function (Order) {

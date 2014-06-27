@@ -2,4 +2,7 @@ node_modules
 .idea
 *.js
 *.js.map
+*.d.ts
+!test/definitions.d.ts
 !linqy.js
+!linqy.d.ts

@@ -1,6 +1,6 @@
 {
     "name": "linqy",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Linq impletation for nodejs, originaly made in typescript.",
     "keywords": [
         "linq",
@@ -21,7 +21,7 @@
         "mocha": "~1.20.0"
     },
     "scripts": {
-        "pretest": "node_modules/.bin/tsc --module commonjs --target ES5 test/tests.ts",
+        "pretest": "node_modules/.bin/tsc --module commonjs --target ES5 test/tests.ts --declaration",
         "test": "mocha --recursive -C"
     },
     "main": "linqy.js",
